@@ -181,9 +181,9 @@ void Finder::file_search(const QFileInfo &file_info, const QString &text)
         pref[i] = j;
     }
     pref.append(0);
-    int prev = 0;
+    int last = 0;
     QFile file(file_info.filePath());
-    QList<QChar> before;
+    QList<QChar> old;
     QQueue<QString> result;
     qint64 pos = 0;
     if (file.open(QFile::ReadOnly))
@@ -193,10 +193,10 @@ void Finder::file_search(const QFileInfo &file_info, const QString &text)
         {
             QChar sym;
             in >> sym;
-            before.push_back(sym);
-            if (before.size() > text.size() + 20)
+            old.push_back(sym);
+            while (old.size() > text.size() + 20)
             {
-                before.pop_front();
+                old.pop_front();
             }
             for (auto i = result.size() - 1; i >= 0; i--)
             {
@@ -205,7 +205,7 @@ void Finder::file_search(const QFileInfo &file_info, const QString &text)
                     result[i] += sym;
                 }
             }
-            int j = prev;
+            int j = last;
             while (j > 0 && (j == text.size() || sym != text.at(j)))
             {
                 j = pref[j - 1];
@@ -217,13 +217,13 @@ void Finder::file_search(const QFileInfo &file_info, const QString &text)
             if (j  == text.size())
             {
                 QString tmp;
-                for (auto c : before)
+                for (auto c : old)
                 {
                     tmp += c;
                 }
                 result.append(tmp);
             }
-            prev = j;
+            last = j;
             pos++;
         }
     }
@@ -251,8 +251,8 @@ qint64 Finder::get_trigram(QChar const trigram[3])
 
 Finder::~Finder()
 {
-    for (auto & future : future_index)
+    for (auto &f : future_index)
     {
-        future.waitForFinished();
+        f.waitForFinished();
     }
 }
