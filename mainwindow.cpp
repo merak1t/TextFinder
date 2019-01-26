@@ -84,7 +84,6 @@ void MainWindow::find() {
         message.setText("Enter at least 3 letters");
         message.exec();
     }
-
 }
 
 void MainWindow::set_progress_bar(int progress)

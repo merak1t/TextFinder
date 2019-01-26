@@ -8,6 +8,7 @@
 
 const int MAX_SIZET = 600000;
 const int FULL = 100;
+
 Finder::Finder() : mutex(QMutex::Recursive)
 {
     connect(&watcher, &QFileSystemWatcher::directoryChanged, this, &Finder::file_changes);
@@ -76,10 +77,6 @@ void Finder::index_dir(QString dir)
             break;
         }
         it.next();
-        if (it.fileInfo().isSymLink())
-        {
-            continue;
-        }
         if (it.fileInfo().isDir())
             watcher.addPath(it.fileInfo().filePath());
         else
