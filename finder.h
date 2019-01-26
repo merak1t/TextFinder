@@ -13,7 +13,7 @@ class Finder : public QObject {
 
 signals:
     void progress_changed(int progress);
-    void file_finished(QString const& file, QList<QString> const& occurences);
+    void file_finished(QString const& file, QList<QString> const& enteries);
     void search_finished();
     void indexing_finished();
 

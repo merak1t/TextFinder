@@ -26,7 +26,7 @@ private slots:
     void scan_dir();
     void find();
     void set_progress_bar(int progress);
-    void add_to_group(QString const& file, QList<QString> const& occurences);
+    void add_to_group(QString const& file, QList<QString> const& enteries);
     void finish_find();
     void finish_scan();
     void show_about_dialog();

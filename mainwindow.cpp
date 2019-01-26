@@ -51,7 +51,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::show_about_dialog()
 {
-    QMessageBox::aboutQt(this);
+    QMessageBox::about(this, "About", "Program which indexes directory and find text substrings.");
 }
 
 void MainWindow::scan_dir() {
@@ -70,12 +70,7 @@ void MainWindow::scan_dir() {
 
 void MainWindow::find() {
     QString text = ui->lineEdit->text();
-    if (text.size() < 3)
-    {
-        QMessageBox message;
-        message.setText("Enter at least 3 letters");
-        message.exec();
-    } else
+    if (text.size() >= 3)
     {
         ui->treeWidget->clear();
         ui->actionScan->setEnabled(false);
@@ -83,17 +78,24 @@ void MainWindow::find() {
         ui->actionCancel->setEnabled(true);
         ui->progressBar->setValue(0);
         futureFind = QtConcurrent::run(&finder, &Finder::find, text);
+    } else
+    {
+        QMessageBox message;
+        message.setText("Enter at least 3 letters");
+        message.exec();
     }
+
 }
 
-void MainWindow::set_progress_bar(int progress) {
+void MainWindow::set_progress_bar(int progress)
+{
     ui->progressBar->setValue(progress);
 }
 
 void MainWindow::add_to_group(QString const& file, QList<QString> const& result) {
     QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
     item->setExpanded(false);
-    item->setText(0, file + " - " + QString::number(result.size()) + " occurences");
+    item->setText(0, file + " - " + QString::number(result.size()) + " enteries");
     for (auto const& it : result) {
         QTreeWidgetItem* child = new QTreeWidgetItem(item);
         child->setText(0, it);
