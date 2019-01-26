@@ -120,10 +120,10 @@ void Finder::add_file(QFileInfo const& file_info)
         QChar trigram[3];
         for (int i = 0; i < 3; i++)
         {
-            QChar tmp;
-            in >> tmp;
-            trigram[i] = tmp;
-            if (!tmp.isPrint() && !tmp.isSpace())
+            QChar sym;
+            in >> sym;
+            trigram[i] = sym;
+            if (!sym.isPrint() && !sym.isSpace())
             {
                 return;
             }
@@ -139,13 +139,13 @@ void Finder::add_file(QFileInfo const& file_info)
             {
                 trigram[i] = trigram[i + 1];
             }
-            QChar tmp;
-            in >> tmp;
-            if (!tmp.isPrint() && !tmp.isSpace())
+            QChar sym;
+            in >> sym;
+            if (!sym.isPrint() && !sym.isSpace())
             {
                 return;
             }
-            trigram[2] = tmp;
+            trigram[2] = sym;
             set_tr.insert(get_trigram(trigram));
             if (set_tr.size() > MAX_SIZET)
             {
@@ -190,9 +190,9 @@ void Finder::file_search(const QFileInfo &file_info, const QString &text)
         QTextStream in(&file);
         while (!in.atEnd())
         {
-            QChar tmp;
-            in >> tmp;
-            before += tmp;
+            QChar sym;
+            in >> sym;
+            before += sym;
             if (before.size() > text.size() + 20)
             {
                 before.pop_front();
@@ -201,15 +201,15 @@ void Finder::file_search(const QFileInfo &file_info, const QString &text)
             {
                 if (result[i].size() < text.size() + 40)
                 {
-                    result[i] += tmp;
+                    result[i] += sym;
                 }
             }
             int j = prev;
-            while (j > 0 && (j == text.size() || tmp != text.at(j)))
+            while (j > 0 && (j == text.size() || sym != text.at(j)))
             {
                 j = pref[j - 1];
             }
-            if (j < text.size() && tmp == text.at(j))
+            if (j < text.size() && sym == text.at(j))
             {
                 j++;
             }
