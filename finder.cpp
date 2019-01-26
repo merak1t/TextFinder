@@ -193,7 +193,7 @@ void Finder::file_search(const QFileInfo &file_info, const QString &text)
         {
             QChar sym;
             in >> sym;
-            before += sym;
+            before.push_back(sym);
             if (before.size() > text.size() + 20)
             {
                 before.pop_front();
