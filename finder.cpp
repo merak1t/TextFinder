@@ -7,7 +7,7 @@
 #include <QtConcurrent/QtConcurrent>
 
 const int MAX_SIZET = 600000;
-
+const int FULL = 100;
 Finder::Finder() : mutex(QMutex::Recursive)
 {
     connect(&watcher, &QFileSystemWatcher::directoryChanged, this, &Finder::file_changes);
@@ -22,7 +22,7 @@ void Finder::find(QString const& text)
     }
     if (all_trigrams.empty())
     {
-        emit progress_changed(100);
+        emit progress_changed(FULL);
         emit search_finished();
         return;
     }
@@ -88,7 +88,7 @@ void Finder::index_dir(QString dir)
     }
     if (all.empty())
     {
-        emit progress_changed(100);
+        emit progress_changed(FULL);
     }
     qint64 cnt = 0;
     for (auto const& file_info : all)
@@ -99,7 +99,7 @@ void Finder::index_dir(QString dir)
         }
         add_file(file_info);
         cnt++;
-        emit progress_changed(int(100 * cnt / all.size()));
+        emit progress_changed(int(FULL * cnt / all.size()));
     }
     emit indexing_finished();
 }
