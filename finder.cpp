@@ -43,20 +43,21 @@ void Finder::find(QString const& text)
         {
             break;
         }
-        bool flag = true;
+        bool find = true;
         for (auto const& trigram : trigrams)
         {
             if (!std::binary_search(file_info.first.begin(), file_info.first.end(),trigram))
             {
-                flag = false;
+                find = false;
                 break;
             }
         }
-        if (flag)
+        if (find)
         {
             file_search(file_info.second, text);
         }
-        emit progress_changed(static_cast<int>(100 * (++cnt) / all_trigrams.size()));
+        cnt++;
+        emit progress_changed(int(FULL * cnt / all_trigrams.size()));
     }
     emit search_finished();
 }
